@@ -51,7 +51,7 @@
 
 Пример файла autoload.php:
 
-<code>
+```php
 <?php
 function localAutoload($className)
 {
@@ -69,4 +69,4 @@ function localAutoload($className)
 }
 spl_autoload_register('localAutoload');
 ?>
-</code>
+```
