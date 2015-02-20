@@ -23,7 +23,8 @@
 
 <h2>3. Папка /local/</h2>
 
-НЕОБХОДИМО, чтобы работа по новому функционалу производилась в папке <code>/local/</code>. Документация - <a href="http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php">/local/</a>
+НЕОБХОДИМО, чтобы работа по новому функционалу производилась в папке <code>/local/</code>. 
+Документация - <a href="http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php">/local/</a>
 
 <h2>4. Организация автозагрузки классов ВНЕ МОДУЛЯ</h2>
 
@@ -56,7 +57,8 @@ function localAutoload($className)
     $className = ltrim($className, '\\');
     $fileName  = '';
     $namespace = '';
-    if ($lastNsPos = strrpos($className, '\\')) {
+    if ($lastNsPos = strrpos($className, '\\')) 
+    {
         $namespace = substr($className, 0, $lastNsPos);
         $className = substr($className, $lastNsPos + 1);
         $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
