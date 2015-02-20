@@ -4,5 +4,5 @@
 
 <h2>Оглавление</h2>
 <ol>
-  <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/EPAGES-CS-1.md">EPAGES-CS-1</a></li>
+  <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/EPAGES-CS-1.md">EPAGES-CS-1</a> - Основной стандарт кодирования</li>
 </ol>
