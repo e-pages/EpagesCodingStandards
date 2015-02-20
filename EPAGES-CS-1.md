@@ -8,7 +8,7 @@
 <ul>
     <li>В файлах ВОЗМОЖНО использовать теги <code>&lt;?php</code>, <code>&lt;?=</code>, а так же <code>&lt;?</code>.</li>
     <li>В файлах с кодом PHP НЕОБХОДИМО использовать только UTF-8 без BOM (для новых проектов).</li>
-    <li>Разработка новых классов, шаблонов, компонетнов, модулей ДЛЯ ВСЕХ проеков ДОЛЖНА вестись в папке /local/</li>
+    <li>Разработка НОВЫХ классов, шаблонов, компонетнов, модулей ДЛЯ ВСЕХ проеков ДОЛЖНА вестись в папке /local/</li>
     <li>НЕОБХОДИМО, чтобы пространства имён и классы ВНЕ МОДУЛЯ соответствовали стандартам PSR, описывающим автозагрузку: [<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-0.md">PSR-0</a>, <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>].</li>
 </ul>
 
