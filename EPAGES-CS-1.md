@@ -8,7 +8,7 @@
 <ul>
     <li>В файлах ВОЗМОЖНО использовать теги <code>&lt;?php</code>, <code>&lt;?=</code>, а так же <code>&lt;?</code>.</li>
     <li>В файлах с кодом PHP НЕОБХОДИМО использовать только UTF-8 без BOM (для новых проектов).</li>
-    <li>Разработка НОВЫХ классов, шаблонов, компонетнов, модулей ДЛЯ ВСЕХ проеков ДОЛЖНА вестись в папке /local/</li>
+    <li>Разработка НОВЫХ классов, шаблонов, компонетнов, модулей ДЛЯ ВСЕХ проектов ДОЛЖНА вестись в папке <code>/local/</code></li>
     <li>НЕОБХОДИМО, чтобы пространства имён и классы ВНЕ МОДУЛЯ соответствовали стандартам PSR, описывающим автозагрузку: [<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-0.md">PSR-0</a>, <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>].</li>
 </ul>
 
@@ -19,9 +19,9 @@
 
 <h3>2.2. Кодировка символов</h3>
 
-Для кода PHP НЕОБХОДИМО использовать только UTF-8 без BOM.
+Для кода PHP НЕОБХОДИМО использовать только UTF-8 без BOM. Уловие ОБЯЗАТЕЛЬНО для новых проектов.
 
-<h2>3. Папка /local/</h2>
+<h2>3. Папка <code>/local/<code></h2>
 
 НЕОБХОДИМО, чтобы работа по новому функционалу производилась в папке <code>/local/</code>. 
 Документация - <a href="http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php">/local/</a>
@@ -32,7 +32,7 @@
 
 Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум первого уровня — соответствующем названию разработчика.
 
-Пример организации автозагрзки классов ВНЕ МОДУЛЯ используя папку <code>/local/</code>
+Пример организации автозагрзки классов ВНЕ МОДУЛЯ используя папку <code>/local/</code>:
 
 Структура папки <code>/local/</code>:
 <ul>
@@ -68,5 +68,26 @@ function localAutoload($className)
     include_once __DIR__ . "/lib/" . $fileName;
 }
 spl_autoload_register('localAutoload');
+?>
+```
+
+Подключение функции автозагрузки в Битрикс:
+```php
+<?php
+//init.php
+// ...
+
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/autoload.php");
+
+// ...
+?>
+```
+
+Пример вызова класса <code>CTestClass</code>:
+
+```php
+<?php
+// Класс подключать не нужно, он будет автоматически подгружен функцией localAutoload()
+$ob = new \Epages\CTestClass();
 ?>
 ```
