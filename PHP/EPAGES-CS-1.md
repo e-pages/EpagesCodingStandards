@@ -96,64 +96,65 @@ $ob = new \Epages\CTestClass();
 <h2>5. Базовые правила при разработке под Битрикс</h2>
 <ul>
     <li>при добавлении кода в файл init.php РЕКОМЕНДУЕТСЯ выносить логически сгруппированный код в отдельные файлы и подключать их внутри init.php</li>
-    <li>НЕ РЕКОМЕНДУЕТСЯ использовать цифровые значения в GetList, GetByID и схожих методах, которые принимают различные ID. РЕКОМЕНДУЕТСЯ создать файл со всеми необходимыми константами и вызывать их имена. У каждой константы ДОЛЖНО быть «говорящее» именование и комментарий.</li>
-</ul>
+    <li>
+        НЕ РЕКОМЕНДУЕТСЯ использовать цифровые значения в GetList, GetByID и схожих методах, которые принимают различные ID. РЕКОМЕНДУЕТСЯ создать файл со всеми необходимыми константами и вызывать их имена. У каждой константы ДОЛЖНО быть «говорящее» именование и комментарий.
 
-<b>Не правильно:</b>
-```php
-<?php
-$comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => 12));
-?>
-```
+        <b>Не правильно:</b>
+        ```php
+        <?php
+        $comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => 12));
+        ?>
+        ```
 
-<b>Правильно: Создаем файл constants.php и указываем в нем:</b>
-```php
-<?php
-//ИБ с комментариями пользователей
-const COMMENTS_IBLOCK_ID = 12;
-?>
-```
+        <b>Правильно: Создаем файл constants.php и указываем в нем:</b>
+        ```php
+        <?php
+        //ИБ с комментариями пользователей
+        const COMMENTS_IBLOCK_ID = 12;
+        ?>
+        ```
 
-<b>Подключаем этот файл в init.php</b>
-```php
-<?php
-//Константы проекта
-include_once($_SERVER["DOCUMENT_ROOT"] . '/bitrix/php_interface/includes/constants.php');
-?>
-```
+        <b>Подключаем этот файл в init.php</b>
+        ```php
+        <?php
+        //Константы проекта
+        include_once($_SERVER["DOCUMENT_ROOT"] . '/bitrix/php_interface/includes/constants.php');
+        ?>
+        ```
 
-<b>Используем константу</b>
-```php
-<?php
-$comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => COMMENTS_IBLOCK_ID));
-?>
-```
-<ul>
+        <b>Используем константу</b>
+        ```php
+        <?php
+        $comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => COMMENTS_IBLOCK_ID));
+        ?>
+        ```
+    </li>
     <li>при выборках данных (например, GetList) ОБЯЗАТЕЛЬНО указывать поля, которые нужны для дальнейших манипуляций, кроме случаев, когда нужны все поля</li>
-    <li>при необходмости выбрать несколько элементов по ID, ОБЯЗАТЕЛЬНО использовать GetList вместо GetByID</li>
-</ul>
+    <li>
+        при необходмости выбрать несколько элементов по ID, ОБЯЗАТЕЛЬНО использовать GetList вместо GetByID
 
-<b>Не правильно:</b>
-```php
-<?php
-$element1 = CIBlockElement::GetByID(1);
-$element2 = CIBlockElement::GetByID(2);
-?>
-```
+        <b>Не правильно:</b>
+        ```php
+        <?php
+        $element1 = CIBlockElement::GetByID(1);
+        $element2 = CIBlockElement::GetByID(2);
+        ?>
+        ```
 
-<b>Правильно:</b>
-```php
-<?php
-$elements = CIBlockElement::GetList(Array(), Array("ID" => Array(1, 2)));
-?>
-```
-
-<ul>
+        <b>Правильно:</b>
+        ```php
+        <?php
+        $elements = CIBlockElement::GetList(Array(), Array("ID" => Array(1, 2)));
+        ?>
+        ```
+    </li>
     <li>НЕ РЕКОМЕНДУЕТСЯ использовать прямые запросы к базе данных без крайней необходимости</li>
-    <li>если к файлу не предусмотрен прямой доступ ОБЯЗАТЕЛЬНО в первой строке файла добавить</li>
+    <li>
+        если к файлу не предусмотрен прямой доступ ОБЯЗАТЕЛЬНО в первой строке файла добавить
+        ```php
+        <?php
+        if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+        ?>
+        ```
+    </li>
 </ul>
-```php
-<?php
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
-?>
-```
