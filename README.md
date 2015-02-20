@@ -5,12 +5,12 @@
 <h2>Оглавление</h2>
 
 <h2>PHP</h2>
-  <li><ol>
+  <ol>
     <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/PHP/EPAGES-CS-1.md</a> - Основной стандарт кодирования</li>
     <li><a href="#">EPAGES-CS-2</a> - Форматирование кода</li>
     <li><a href="#">EPAGES-CS-3</a> - Соглашение об именовании</li>
     <li><a href="#">EPAGES-CS-4</a> - Комментарии</li>
-  </ol></li>
+  </ol>
 <h2>JavaScript</h2>
   <ol>
     <li><a href="#">EPAGES-CS-5</a> - JS ???</li>
