@@ -3,6 +3,15 @@
 В этом руководстве описаны рекомендуемые техники при разработке под платформу 1С-Битрикс (далее просто Битрикс). Руководство максимально приближено к официальным стандартам кодирования, разработанными в компании 1С-Битрикс, но все-таки имеет отличия. 
 
 <h2>Оглавление</h2>
-<ol>
-  <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/EPAGES-CS-1.md">EPAGES-CS-1</a> - Основной стандарт кодирования</li>
-</ol>
+<ul>
+  <li>PHP</li>
+  <ol>
+    <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/EPAGES-CS-1.md">EPAGES-CS-1</a> - Основной стандарт кодирования</li>
+    <li><a href="#">EPAGES-CS-2</a> - Форматирование кода</li>
+    <li><a href="#">EPAGES-CS-3</a> - Соглашение об именовании</li>
+    <li><a href="#">EPAGES-CS-4</a> - Комментарии</li>
+  </ol>
+  <li>JavaScript</li>
+  <ol>
+    <li><a href="#">EPAGES-CS-5</a> - JS ???</li>
+  </ol>
