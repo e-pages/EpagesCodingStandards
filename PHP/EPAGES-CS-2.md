@@ -27,11 +27,13 @@
 
 для строки
 ```php
+<?php
 $arAuthResult = $USER->ChangePassword($USER_LOGIN, $USER_CHECKWORD, $USER_PASSWORD, $USER_CONFIRM_PASSWORD, $USER_LID);
 ```
 
 допустимым будет следующий вариант переноса:
 ```php
+<?php
 $arAuthResult = $USER->ChangePassword($USER_LOGIN, $USER_CHECKWORD,
 $USER_PASSWORD, $USER_CONFIRM_PASSWORD, $USER_LID);
 ```
@@ -40,12 +42,14 @@ $USER_PASSWORD, $USER_CONFIRM_PASSWORD, $USER_LID);
 
 для строки
 ```php
+<?php
 if(COption::GetOptionString("main", "new_user_registration", "N")=="Y" && $_SERVER['REQUEST_METHOD']=='POST' && 
 $TYPE=="REGISTRATION" && (!defined("ADMIN_SECTION") || ADMIN_SECTION!==true))
 ```
 
 допустимым будет следующий вариант переноса:
 ```php
+<?php
 if (COption::GetOptionString("main", "new_user_registration", "N") == "Y"
 && $_SERVER['REQUEST_METHOD'] == 'POST' && $TYPE == "REGISTRATION"
 && (!defined("ADMIN_SECTION") || ADMIN_SECTION !== true))
