@@ -9,7 +9,7 @@
     <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/PHP/EPAGES-CS-1.md">EPAGES-CS-1</a> - Основной стандарт кодирования</li>
     <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/PHP/EPAGES-CS-2.md">EPAGES-CS-2</a> - Форматирование кода</li>
     <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/PHP/EPAGES-CS-3.md">EPAGES-CS-3</a> - Соглашение об именовании</li>
-    <li><a href="#">EPAGES-CS-4</a> - Комментарии</li>
+    <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/PHP/EPAGES-CS-4.md">EPAGES-CS-4</a> - Комментарии</li>
   </ol>
 <h2>JavaScript</h2>
   <ol>
