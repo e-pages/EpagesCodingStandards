@@ -47,7 +47,6 @@ $arAuthResult = $USER->ChangePassword($USER_LOGIN, $USER_CHECKWORD,
 <?php
 if(COption::GetOptionString("main", "new_user_registration", "N")=="Y" && $_SERVER['REQUEST_METHOD']=='POST' && $TYPE=="REGISTRATION" && (!defined("ADMIN_SECTION") || ADMIN_SECTION!==true))
 {
-
 }
 ?>
 ```
@@ -72,6 +71,7 @@ if (COption::GetOptionString("main", "new_user_registration", "N") == "Y"
 
 <h3>2.4. Форматирование подчиненности</h3>
 Подчиненный код ДОЛЖЕН быть сдвинут от главного ровно на один символ табуляции. Размещать подчиненный код на той же строке, что и главный ЗАПРЕЩЕНО.
+<br/>
 <b>Пример:</b>
 не правильно писать так:
 ```php
@@ -120,7 +120,7 @@ $c = $a;
 	<li>если тела всех частей инструкции состоят не более чем из одного выражения, то инструкция все равно ДОЛЖНА иметь фигурные скобки</li>
 </ul>
 ```php
-<?
+<?php
 if (условие) 
 {
 	действие1;
@@ -147,7 +147,7 @@ else
 } 
 ?>
 ```
-При написании инструкций ДОЛЖНО строго применяться правило "2.4. Форматирование подчиненности": тело инструкции ДОЛЖНО быть сдвинуто на один символ табуляции вправо от самой инструкции. Фигурные скобки ДОЛЖНЫ находиться на отдельных строках и ДОЛЖНЫ быть на одном уровне с инструкцией.
+При написании инструкций ДОЛЖНО строго применяться правило "2.4. Форматирование подчиненности", тело инструкции ДОЛЖНО быть сдвинуто на один символ табуляции вправо от самой инструкции. Фигурные скобки ДОЛЖНЫ находиться на отдельных строках и ДОЛЖНЫ быть на одном уровне с инструкцией.
 
 <b>Пример:</b>
 
@@ -180,7 +180,7 @@ else
 
 Например,
 ```php
-<?
+<?php
 if(COption::GetOptionString("main", "new_user_registration", "N")=="Y" && $_SERVER['REQUEST_METHOD']=='POST' &&
 $TYPE=="REGISTRATION" && (!defined("ADMIN_SECTION") || ADMIN_SECTION!==true))
 {
@@ -189,7 +189,7 @@ $TYPE=="REGISTRATION" && (!defined("ADMIN_SECTION") || ADMIN_SECTION!==true))
 ```
 можно записать как
 ```php
-<?
+<?php
 if (COption::GetOptionString("main", "new_user_registration", "N") == "Y"
 	&& $_SERVER['REQUEST_METHOD'] == 'POST' && $TYPE == "REGISTRATION"
 	&& (!defined("ADMIN_SECTION") || ADMIN_SECTION !== true))
@@ -202,7 +202,7 @@ if (COption::GetOptionString("main", "new_user_registration", "N") == "Y"
 
 Например,
 ```php
-<?
+<?php
 if((!(defined("STATISTIC_ONLY") && STATISTIC_ONLY && substr($APPLICATION->GetCurPage(), 0,
 strlen(BX_ROOT."/admin/"))!=BX_ROOT."/admin/")) && COption::GetOptionString("main", "include_charset", "Y")=="Y"
 && strlen(LANG_CHARSET)>0)
@@ -210,7 +210,7 @@ strlen(BX_ROOT."/admin/"))!=BX_ROOT."/admin/")) && COption::GetOptionString("mai
 ```
 можно записать так:
 ```php
-<?
+<?php
 $publicStatisticOnly = false;
 if (defined("STATISTIC_ONLY") && STATISTIC_ONLY 
 	&& substr($APPLICATION->GetCurPage(), 0, strlen(BX_ROOT."/admin/")) != BX_ROOT."/admin/")
@@ -254,7 +254,7 @@ $arFilter = array(
 
 <h2>4. Пустые строки и пробелы</h2>
 <h3>4.1. Пустые строки</h3>
-Пустые строки помогаю разбивать код приложения на логические сегменты. Несколькими строками МОГУТ отделяться секции в исходном файле. Одной пустой строкой отделяются друг от друга методы, логические секции внутри метода для более удобного чтения. Перед логической секцией рекомендуется вставить комментарий, в котором будет указано назначение этой секции (см. EPAGES-CS-4).
+Пустые строки помогают разбивать код приложения на логические сегменты. Несколькими строками МОГУТ отделяться секции в исходном файле. Одной пустой строкой отделяются друг от друга методы, логические секции внутри метода для более удобного чтения. Перед логической секцией РЕКОМЕНДУЕТСЯ вставить комментарий, в котором будет указано назначение этой секции (см. EPAGES-CS-4).
 
 
 <h3>4.1. Пробелы</h3>
