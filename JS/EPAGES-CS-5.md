@@ -56,7 +56,7 @@ JavaScript программы должны храниться в файлах с
 var currentEntry, // currently selected table entry
     level,        // indentation level
     size;         // size of table
-```    
+```
 
 JavaScript не имеет блочных областей видимости. Определите все переменные в начале функции.
 
