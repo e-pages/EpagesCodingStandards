@@ -13,5 +13,5 @@
   </ol>
 <h2>JavaScript</h2>
   <ol>
-    <li><a href="#">EPAGES-CS-5</a> - JS ???</li>
+    <li><a href="#">EPAGES-CS-5</a> - Основной стандарт кодирование на JavaScript</li>
   </ol>
