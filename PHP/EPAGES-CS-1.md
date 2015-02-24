@@ -110,7 +110,7 @@ $comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => 12));
 ```php
 <?php
 //ИБ с комментариями пользователей
-const COMMENTS_IBLOCK_ID = 12;
+const BX_COMMENTS_IBLOCK_ID = 12;
 ?>
 ```
 
