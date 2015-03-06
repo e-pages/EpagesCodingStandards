@@ -262,21 +262,21 @@ $arFilter = array(
 Один пробел используется в объявлении методов после запятой, но не перед скобками:
 ```php
 <?php
-TestMethod($a, $b, $c);
+testMethod($a, $b, $c);
 ?>
 ```
 
 Пример неправильного использования:
 ```php
 <?php
-TestMethod($a,$b,$c);
+testMethod($a,$b,$c);
 ?>
 ```
 
 либо
 ```php
 <?php
-TestMethod( $a, $b, $c );
+testMethod( $a, $b, $c );
 ?>
 ```
 

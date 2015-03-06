@@ -32,11 +32,11 @@
 НЕОБХОДИМО, чтобы пространства имён и классы соответствовали стандартам "автозагрузки" [<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>].
 
 Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум первого уровня — соответствующем названию разработчика. Возможны два варианта размещения классов: папка <code>/local/</code> и папка <code>/bitrix/php_interface/include/</code>.
-В первом случае namespace класса должен быть равный <code>Epages</code>, во втором случае - <code>Epages\BitrixInclude</code>
+В первом случае namespace класса ДОЛЖЕН быть равный <code>Epages</code>, во втором случае - <code>Epages\BitrixInclude</code>
 
 Пример организации автозагрузки классов ВНЕ МОДУЛЯ используя папку <code>/local/</code> и <code>/bitrix/php_interface/include/</code>:
 
-Структура папки <code>/local/</code>:
+Структура папок:
 <ul>
     <li>/bitrix/</li>
     <ul>
@@ -58,10 +58,10 @@
 			</ul>
 		</ul>
 	</ul>
-	<li>autoload.php</li>
+	<li>autoloader.php</li>
 </ul>
 
-Пример файла autoload.php:
+Пример файла autoloader.php:
 
 ```php
 <?php
@@ -211,7 +211,7 @@ class Psr4AutoloaderClass
 ?>
 ```
 
-Подключение функции автозагрузки в Битрикс:
+Подключение класса автозагрузки в Битрикс:
 ```php
 <?php
 //init.php
@@ -231,7 +231,8 @@ $loader->addNamespace('Epages\BitrixInclude', $_SERVER["DOCUMENT_ROOT"] . '/bitr
 
 ```php
 <?php
-// Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace()
+/* Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace() 
+из папки /local/lib/ */
 $ob = new \Epages\BitrixInclude\CTestClass1();
 ?>
 ```
@@ -240,7 +241,8 @@ $ob = new \Epages\BitrixInclude\CTestClass1();
 
 ```php
 <?php
-// Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace()
+/* Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace() 
+из папки /bitrix/php_interface/include/ */
 $ob = new \Epages\CTestClass2();
 ?>
 ```
