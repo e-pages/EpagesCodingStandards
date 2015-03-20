@@ -29,59 +29,221 @@
 
 <h2>4. Организация автозагрузки классов ВНЕ МОДУЛЯ</h2>
 
-НЕОБХОДИМО, чтобы пространства имён и классы соответствовали стандартам "автозагрузки" [<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-0.md">PSR-0</a>, <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>].
+НЕОБХОДИМО, чтобы пространства имён и классы соответствовали стандартам "автозагрузки" [<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>].
 
-Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум первого уровня — соответствующем названию разработчика.
+Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум первого уровня — соответствующем названию разработчика. Возможны два варианта размещения классов: папка <code>/local/</code> и папка <code>/bitrix/php_interface/include/</code>.
+В первом случае namespace класса ДОЛЖЕН быть равный <code>Epages</code>, во втором случае - <code>Epages\BitrixInclude</code>
 
-Пример организации автозагрузки классов ВНЕ МОДУЛЯ используя папку <code>/local/</code>:
+Пример организации автозагрузки классов ВНЕ МОДУЛЯ используя папку <code>/local/</code> и <code>/bitrix/php_interface/include/</code>:
 
-Структура папки <code>/local/</code>:
+Структура папок:
 <ul>
+    <li>/bitrix/</li>
+    <ul>
+        <li>/php_interface/</li>
+        <ul>
+            <li>/include/</li>
+            <ul>
+                <li>CTestClass1.php</li>
+            </ul>
+        </ul>
+    </ul>
 	<li>/local/</li>
 	<ul>
 		<li>/lib/</li>
 		<ul>
 			<li>/Epages/</li>
 			<ul>
-				<li>CTestClass.php</li>
+				<li>CTestClass2.php</li>
 			</ul>
 		</ul>
 	</ul>
-	<li>autoload.php</li>
+	<li>autoloader.php</li>
 </ul>
 
-Пример файла autoload.php:
+Пример файла autoloader.php:
 
 ```php
 <?php
-function localAutoload($className)
-{
-    $className = ltrim($className, '\\');
-    $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
 
-    include_once __DIR__ . "/lib/" . $fileName;
+/**
+ * An example of a general-purpose implementation that includes the optional
+ * functionality of allowing multiple base directories for a single namespace
+ * prefix.
+ */
+class Psr4AutoloaderClass
+{
+    /**
+     * An associative array where the key is a namespace prefix and the value
+     * is an array of base directories for classes in that namespace.
+     *
+     * @var array
+     */
+    protected $prefixes = array();
+
+    /**
+     * Register loader with SPL autoloader stack.
+     * 
+     * @return void
+     */
+    public function register()
+    {
+        spl_autoload_register(array($this, 'loadClass'));
+    }
+
+    /**
+     * Adds a base directory for a namespace prefix.
+     *
+     * @param string $prefix The namespace prefix.
+     * @param string $base_dir A base directory for class files in the
+     * namespace.
+     * @param bool $prepend If true, prepend the base directory to the stack
+     * instead of appending it; this causes it to be searched first rather
+     * than last.
+     * @return void
+     */
+    public function addNamespace($prefix, $base_dir, $prepend = false)
+    {
+        // normalize namespace prefix
+        $prefix = trim($prefix, '\\');
+
+        // normalize the base directory with a trailing separator
+        $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
+
+        // initialize the namespace prefix array
+        if (isset($this->prefixes[$prefix]) === false) {
+            $this->prefixes[$prefix] = array();
+        }
+
+        // retain the base directory for the namespace prefix
+        if ($prepend) {
+            array_unshift($this->prefixes[$prefix], $base_dir);
+        } else {
+            array_push($this->prefixes[$prefix], $base_dir);
+        }
+    }
+
+    /**
+     * Loads the class file for a given class name.
+     *
+     * @param string $class The fully-qualified class name.
+     * @return mixed The mapped file name on success, or boolean false on
+     * failure.
+     */
+    public function loadClass($class)
+    {
+        // the current namespace prefix
+        $prefix = $class;
+
+        // work backwards through the namespace names of the fully-qualified
+        // class name to find a mapped file name
+        while (false !== $pos = strrpos($prefix, '\\')) {
+
+            
+            $prefix = substr($class, 0, $pos);
+
+            // the rest is the relative class name
+            $relative_class = substr($class, $pos + 1);
+
+            // try to load a mapped file for the prefix and relative class
+            $mapped_file = $this->loadMappedFile($prefix, $relative_class);
+            if ($mapped_file) {
+                return $mapped_file;
+            }
+ 
+        }
+
+        // never found a mapped file
+        return false;
+    }
+
+    /**
+     * Load the mapped file for a namespace prefix and relative class.
+     * 
+     * @param string $prefix The namespace prefix.
+     * @param string $relative_class The relative class name.
+     * @return mixed Boolean false if no mapped file can be loaded, or the
+     * name of the mapped file that was loaded.
+     */
+    protected function loadMappedFile($prefix, $relative_class)
+    {
+        // are there any base directories for this namespace prefix?
+        if (isset($this->prefixes[$prefix]) === false) {
+            return false;
+        }
+
+        // look through base directories for this namespace prefix
+        foreach ($this->prefixes[$prefix] as $base_dir) {
+
+            // replace the namespace prefix with the base directory,
+            // replace namespace separators with directory separators
+            // in the relative class name, append with .php
+            $file = $base_dir
+                  . str_replace('\\', '/', $relative_class)
+                  . '.php';
+
+            // if the mapped file exists, require it
+            if ($this->requireFile($file)) {
+                // yes, we're done
+                return $file;
+            }
+        }
+
+        // never found it
+        return false;
+    }
+
+    /**
+     * If a file exists, require it from the file system.
+     * 
+     * @param string $file The file to require.
+     * @return bool True if the file exists, false if not.
+     */
+    protected function requireFile($file)
+    {
+        if (file_exists($file)) {
+            require $file;
+            return true;
+        }
+        return false;
+    }
 }
-spl_autoload_register('localAutoload');
+?>
 ```
 
-Подключение функции автозагрузки в Битрикс:
+Подключение класса автозагрузки в Битрикс:
 ```php
 <?php
 //init.php
 // ...
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/autoload.php");
+include_once $_SERVER["DOCUMENT_ROOT"] . '/local/autoloader.php';
+$loader = new Psr4AutoloaderClass;
+$loader->register();
+$loader->addNamespace('Epages', $_SERVER["DOCUMENT_ROOT"] . '/local/lib/Epages');
+$loader->addNamespace('Epages\BitrixInclude', $_SERVER["DOCUMENT_ROOT"] . '/bitrix/php_interface/include');
 
 // ...
 ?>
 ```
 
-Пример вызова класса <code>CTestClass</code>:
+Пример вызова класса <code>CTestClass1</code>:
 
 ```php
 <?php
-// Класс подключать не нужно, он будет автоматически подгружен функцией localAutoload()
-$ob = new \Epages\CTestClass();
+/* Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace() 
+из папки /local/lib/ */
+$ob = new \Epages\BitrixInclude\CTestClass1();
+?>
+```
+
+Пример вызова класса <code>CTestClass2</code>:
+
+```php
+<?php
+/* Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace() 
+из папки /bitrix/php_interface/include/ */
+$ob = new \Epages\CTestClass2();
 ?>
 ```
 
