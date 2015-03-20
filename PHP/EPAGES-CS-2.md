@@ -39,8 +39,13 @@ $arAuthResult = $USER->ChangePassword($USER_LOGIN, $USER_CHECKWORD, $USER_PASSWO
 допустимым будет следующий вариант переноса:
 ```php
 <?php
-$arAuthResult = $USER->ChangePassword($USER_LOGIN, $USER_CHECKWORD,
-    $USER_PASSWORD, $USER_CONFIRM_PASSWORD, $USER_LID);
+$arAuthResult = $USER->ChangePassword(
+	$USER_LOGIN,
+	$USER_CHECKWORD,
+    $USER_PASSWORD,
+    $USER_CONFIRM_PASSWORD,
+    $USER_LID
+);
 ?>
 ```
 
