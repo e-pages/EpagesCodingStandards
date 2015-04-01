@@ -179,5 +179,6 @@ var collection = (function () {
 
 <b>Пример для PhpStorm:</b>
 Languages & Frameworks -> JavaScript -> Code Quality Tools -> JSLint
-<img src="//habrastorage.org/files/c51/47c/f9d/c5147cf9dcb246b3817521258ab68f71.png"/>
+
+<img src="http://habrastorage.org/files/c51/47c/f9d/c5147cf9dcb246b3817521258ab68f71.png"/>
 
