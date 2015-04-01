@@ -171,7 +171,7 @@ var collection = (function () {
 </ul>
 
 <b>Примечание!</b>
-Обявить глобальную переменную для JSLint можно так:
+Объявить глобальную переменную для JSLint можно так:
 ```javascript
 /* global $, jQuery */
 ```
