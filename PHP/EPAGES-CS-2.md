@@ -623,7 +623,10 @@ $r = $a + ($b * $c);
 ```php
 <div class="navbar">
 	<ul class="top-menu">
-		<?$APPLICATION->IncludeComponent('bitrix:menu', "top", array(
+		<?$APPLICATION->IncludeComponent(
+			"bitrix:menu",
+			"top",
+			array(
 				"ROOT_MENU_TYPE" => "top",
 				"MENU_CACHE_TYPE" => "A",
 				"MENU_CACHE_TIME" => "36000000",
