@@ -39,8 +39,13 @@ $arAuthResult = $USER->ChangePassword($USER_LOGIN, $USER_CHECKWORD, $USER_PASSWO
 допустимым будет следующий вариант переноса:
 ```php
 <?php
-$arAuthResult = $USER->ChangePassword($USER_LOGIN, $USER_CHECKWORD,
-    $USER_PASSWORD, $USER_CONFIRM_PASSWORD, $USER_LID);
+$arAuthResult = $USER->ChangePassword(
+	$USER_LOGIN,
+	$USER_CHECKWORD,
+    $USER_PASSWORD,
+    $USER_CONFIRM_PASSWORD,
+    $USER_LID
+);
 ?>
 ```
 
@@ -612,4 +617,27 @@ $r = $a + ($b * $c);
 
 <ul>
 	<li>НЕ РЕКОМЕНДУЕТСЯ выводить элементы верстки используя конструкцию языка <code>echo</code> или функцию <code>print</code>. СЛЕДУЕТ прервать PHP-код тэгом <code>?></code> и разместить после него нужные html-элементы</li>
+	<li>ЗАПРЕЩЕНО выносить связные элементы верстки за шаблон компонента</li>
 </ul>
+Пример плохого кода:
+```php
+<div class="navbar">
+	<ul class="top-menu">
+		<?$APPLICATION->IncludeComponent(
+			"bitrix:menu",
+			"top",
+			array(
+				"ROOT_MENU_TYPE" => "top",
+				"MENU_CACHE_TYPE" => "A",
+				"MENU_CACHE_TIME" => "36000000",
+				"MENU_CACHE_USE_GROUPS" => "Y",
+				"MENU_CACHE_GET_VARS" => array(),
+				"MAX_LEVEL" => "1",
+				"USE_EXT" => "N",
+				"ALLOW_MULTI_SELECT" => "N"
+			)
+		);?>
+	</ul>
+</div>
+```
+Правильно будет перенести `<ul class="top-menu">` в шаблон
