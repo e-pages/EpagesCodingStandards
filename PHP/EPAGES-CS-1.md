@@ -245,7 +245,7 @@ $ob = new \Epages\SomeClass2();
 AddEventHandler(
     'iblock',
     'OnBeforeIBlockElementUpdate',
-    array('\Epages\IBlock\EventHandlers\OnBeforeIBlockElementUpdate', 'doSomethingCool')
+    array('\Epages\IBlock\Event\OnBeforeIBlockElementUpdate', 'doSomethingCool')
 );
 ```
 
