@@ -9,7 +9,7 @@
     <li>В файлах ВОЗМОЖНО использовать теги <code>&lt;?php</code>, <code>&lt;?=</code>, а так же <code>&lt;?</code>.</li>
     <li>В файлах с кодом PHP НЕОБХОДИМО использовать только UTF-8 без BOM (для новых проектов).</li>
     <li>Разработка НОВЫХ классов, шаблонов, компонетнов, модулей ДЛЯ ВСЕХ проектов ДОЛЖНА вестись в папке <code>/local/</code></li>
-    <li>НЕОБХОДИМО, чтобы пространства имён и классы ВНЕ МОДУЛЯ соответствовали стандартам PSR, описывающим автозагрузку: [<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-0.md">PSR-0</a>, <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>].</li>
+    <li>НЕОБХОДИМО, чтобы пространства имён и классы ВНЕ МОДУЛЯ соответствовали <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>.</li>
     <li>Базовые правила при разработке под Битрикс</li>
 </ul>
 
@@ -24,37 +24,31 @@
 
 <h2>3. Папка <code>/local/<code></h2>
 
-НЕОБХОДИМО, чтобы работа по новому функционалу производилась в папке <code>/local/</code>. 
+НЕОБХОДИМО, чтобы работа по новому функционалу производилась в папке <code>/local/</code>.
 Документация - <a href="http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php">/local/</a>
 
 <h2>4. Организация автозагрузки классов ВНЕ МОДУЛЯ</h2>
 
-НЕОБХОДИМО, чтобы пространства имён и классы соответствовали стандартам "автозагрузки" [<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>].
+НЕОБХОДИМО, чтобы пространства имён и классы соответствовали стандарту "автозагрузки" <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>.
 
-Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум первого уровня — соответствующем названию разработчика. Возможны два варианта размещения классов: папка <code>/local/</code> и папка <code>/bitrix/php_interface/include/</code>.
-В первом случае namespace класса ДОЛЖЕН быть равный <code>Epages</code>, во втором случае - <code>Epages\BitrixInclude</code>
+Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум первого уровня — соответствующем названию разработчика. Рекомендуемый вариант размещения классов: папка <code>/local/lib/[Vendor]</code>.
+Например, для <code>\\Epages</code> путь от корня сайта будет <code>/local/lib/Epages/</code>
 
-Пример организации автозагрузки классов ВНЕ МОДУЛЯ используя папку <code>/local/</code> и <code>/bitrix/php_interface/include/</code>:
+Пример организации автозагрузки классов ВНЕ МОДУЛЯ:
 
 Структура папок:
 <ul>
-    <li>/bitrix/</li>
-    <ul>
-        <li>/php_interface/</li>
-        <ul>
-            <li>/include/</li>
-            <ul>
-                <li>CTestClass1.php</li>
-            </ul>
-        </ul>
-    </ul>
 	<li>/local/</li>
 	<ul>
-		<li>/lib/</li>
+		<li>lib/</li>
 		<ul>
-			<li>/Epages/</li>
+			<li>Epages/</li>
 			<ul>
-				<li>CTestClass2.php</li>
+        <li>SomeModule/</li>
+        <ul>
+          <li>SomeClass1.php</li>
+        </ul>
+				<li>SomeClass2.php</li>
 			</ul>
 		</ul>
 	</ul>
@@ -71,7 +65,7 @@
  * functionality of allowing multiple base directories for a single namespace
  * prefix.
  */
-class Psr4AutoloaderClass
+class Psr4Autoloader
 {
     /**
      * An associative array where the key is a namespace prefix and the value
@@ -83,7 +77,7 @@ class Psr4AutoloaderClass
 
     /**
      * Register loader with SPL autoloader stack.
-     * 
+     *
      * @return void
      */
     public function register()
@@ -139,7 +133,7 @@ class Psr4AutoloaderClass
         // class name to find a mapped file name
         while (false !== $pos = strrpos($prefix, '\\')) {
 
-            
+
             $prefix = substr($class, 0, $pos);
 
             // the rest is the relative class name
@@ -150,7 +144,7 @@ class Psr4AutoloaderClass
             if ($mapped_file) {
                 return $mapped_file;
             }
- 
+
         }
 
         // never found a mapped file
@@ -159,7 +153,7 @@ class Psr4AutoloaderClass
 
     /**
      * Load the mapped file for a namespace prefix and relative class.
-     * 
+     *
      * @param string $prefix The namespace prefix.
      * @param string $relative_class The relative class name.
      * @return mixed Boolean false if no mapped file can be loaded, or the
@@ -195,7 +189,7 @@ class Psr4AutoloaderClass
 
     /**
      * If a file exists, require it from the file system.
-     * 
+     *
      * @param string $file The file to require.
      * @return bool True if the file exists, false if not.
      */
@@ -218,33 +212,41 @@ class Psr4AutoloaderClass
 // ...
 
 include_once $_SERVER["DOCUMENT_ROOT"] . '/local/autoloader.php';
-$loader = new Psr4AutoloaderClass;
+$loader = new Psr4Autoloader;
 $loader->register();
 $loader->addNamespace('Epages', $_SERVER["DOCUMENT_ROOT"] . '/local/lib/Epages');
-$loader->addNamespace('Epages\BitrixInclude', $_SERVER["DOCUMENT_ROOT"] . '/bitrix/php_interface/include');
 
 // ...
 ?>
 ```
 
-Пример вызова класса <code>CTestClass1</code>:
+Пример вызова класса <code>SomeClass1</code>:
 
 ```php
 <?php
-/* Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace() 
-из папки /local/lib/ */
-$ob = new \Epages\BitrixInclude\CTestClass1();
+/* Будет автоматически подключен файл /local/lib/Epages/SomeModule/SomeClass1.php */
+$ob = new \Epages\SomeModule\SomeClass1();
 ?>
 ```
 
-Пример вызова класса <code>CTestClass2</code>:
+Пример вызова класса <code>SomeClass2</code>:
 
 ```php
 <?php
-/* Класс подключать не нужно, он будет автоматически подгружен методом Psr4AutoloaderClass::addNamespace() 
-из папки /bitrix/php_interface/include/ */
-$ob = new \Epages\CTestClass2();
+/* Будет автоматически подключен файл /local/lib/Epages/SomeClass2.php */
+$ob = new \Epages\SomeClass2();
 ?>
+```
+<h3>4.1. Обработчики событий</h3>
+РЕКОМЕНДУЕТСЯ обработчики событий размещать в классах, таким образом:
+<code>\\Epages\\[модуль]\\Event\\[событие]</code>
+Пример подключения:
+```php
+AddEventHandler(
+    'iblock',
+    'OnBeforeIBlockElementUpdate',
+    array('\Epages\IBlock\Event\OnBeforeIBlockElementUpdate', 'doSomethingCool')
+);
 ```
 
 <h2>5. Базовые правила при разработке под Битрикс</h2>
@@ -264,7 +266,7 @@ $comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => 12));
 ```php
 <?php
 //ИБ с комментариями пользователей
-const BX_COMMENTS_IBLOCK_ID = 12;
+const COMMENTS_IBLOCK_ID = 12;
 ?>
 ```
 
@@ -272,7 +274,7 @@ const BX_COMMENTS_IBLOCK_ID = 12;
 ```php
 <?php
 //Константы проекта
-include_once($_SERVER["DOCUMENT_ROOT"] . '/bitrix/php_interface/includes/constants.php');
+include_once($_SERVER["DOCUMENT_ROOT"] . '/local/constants.php');
 ?>
 ```
 
