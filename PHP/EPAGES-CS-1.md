@@ -22,7 +22,7 @@
 
 Для кода PHP НЕОБХОДИМО использовать только UTF-8 без BOM. Уловие ОБЯЗАТЕЛЬНО для новых проектов.
 
-<h2>3. Папка <code>/local/<code></h2>
+<h2>3. Папка /local/</h2>
 
 НЕОБХОДИМО, чтобы работа по новому функционалу производилась в папке <code>/local/</code>.
 Документация - <a href="http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php">/local/</a>
@@ -38,21 +38,21 @@
 
 Структура папок:
 <ul>
-	<li>/local/</li>
-	<ul>
-		<li>lib/</li>
-		<ul>
-			<li>Epages/</li>
-			<ul>
-        <li>SomeModule/</li>
+    <li>/local/</li>
+    <ul>
+        <li>lib/</li>
         <ul>
-          <li>SomeClass1.php</li>
+            <li>Epages/</li>
+            <ul>
+                <li>SomeModule/</li>
+                <ul>
+                    <li>SomeClass1.php</li>
+                </ul>
+                <li>SomeClass2.php</li>
+            </ul>
         </ul>
-				<li>SomeClass2.php</li>
-			</ul>
-		</ul>
-	</ul>
-	<li>autoloader.php</li>
+    </ul>
+    <li>autoloader.php</li>
 </ul>
 
 Пример файла autoloader.php:
@@ -173,8 +173,8 @@ class Psr4Autoloader
             // replace namespace separators with directory separators
             // in the relative class name, append with .php
             $file = $base_dir
-                  . str_replace('\\', '/', $relative_class)
-                  . '.php';
+                . str_replace('\\', '/', $relative_class)
+                . '.php';
 
             // if the mapped file exists, require it
             if ($this->requireFile($file)) {
@@ -243,9 +243,9 @@ $ob = new \Epages\SomeClass2();
 Пример подключения:
 ```php
 AddEventHandler(
-    'iblock',
-    'OnBeforeIBlockElementUpdate',
-    array('\Epages\IBlock\Event\OnBeforeIBlockElementUpdate', 'doSomethingCool')
+'iblock',
+'OnBeforeIBlockElementUpdate',
+array('\Epages\IBlock\Event\OnBeforeIBlockElementUpdate', 'doSomethingCool')
 );
 ```
 
