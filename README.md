@@ -15,3 +15,7 @@
   <ol>
     <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/JS/EPAGES-CS-5.md">EPAGES-CS-5</a> - Основной стандарт кодирование на JavaScript</li>
   </ol>
+<h3>VCS</h3>
+  <ol>
+    <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/VSC/EPAGES-CS-6.md">EPAGES-CS-5</a> - Стандарт написания сообщений к коммитам</li>
+  </ol>
