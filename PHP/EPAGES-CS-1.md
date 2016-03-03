@@ -1,314 +1,306 @@
 # EPAGES-CS-1 - E-PAGES Coding Standart 1
 
-<h1>Основной стандарт кодирования</h1>
+# Основной стандарт кодирования
 
-Этот раздел стандарта описывает какие элементы кода следует считать стандартными, необходимыми для обеспечения высокого уровня технического взаимодействия между общим (разделяемым) кодом PHP.
+Этот раздел стандарта описывает какие элементы кода следует считать стандартными, необходимыми для обеспечения
+высокого уровня технического взаимодействия между общим (разделяемым) кодом PHP.
 
-<h2>1. Обзор</h2>
-<ul>
-    <li>В файлах ВОЗМОЖНО использовать теги <code>&lt;?php</code>, <code>&lt;?=</code>, а так же <code>&lt;?</code>.</li>
-    <li>В файлах с кодом PHP НЕОБХОДИМО использовать только UTF-8 без BOM (для новых проектов).</li>
-    <li>Разработка НОВЫХ классов, шаблонов, компонетнов, модулей ДЛЯ ВСЕХ проектов ДОЛЖНА вестись в папке <code>/local/</code></li>
-    <li>НЕОБХОДИМО, чтобы пространства имён и классы ВНЕ МОДУЛЯ соответствовали <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>.</li>
-    <li>Базовые правила при разработке под Битрикс</li>
-</ul>
+[psr-1]: http://www.php-fig.org/psr/psr-1/
+[psr-2]: http://www.php-fig.org/psr/psr-2/
+[psr-4]: http://www.php-fig.org/psr/psr-4/
+[local-folder]: http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php
+[composer-autoload]: https://getcomposer.org/doc/01-basic-usage.md#autoloading
+[phinx]: https://phinx.org/
 
-<h2>2. Файлы</h2>
-<h3>2.1. Теги PHP</h3>
+## 1. Форматирование
+НЕОБХОДИМО придерживаться [PSR-1: Basic Coding Standard][psr-1] и [PSR-2: Coding Style Guide][psr-2].
 
-В коде PHP ВОЗМОЖНО использовать полные теги <code>&lt;?php</code> или сокращённую форму <code>&lt;?=</code>. Так же ВОЗМОЖНО использование тега <code>&lt;?</code>
+## 2. Расположение кода
 
-<h3>2.2. Кодировка символов</h3>
+### 2.1. Папка /local/
 
-Для кода PHP НЕОБХОДИМО использовать только UTF-8 без BOM. Уловие ОБЯЗАТЕЛЬНО для новых проектов.
+НЕОБХОДИМО, чтобы работа по новому функционалу производилась в директории `/local/`, которая расположена в корне сайта.
+[Подробнее.][local-folder]
 
-<h2>3. Папка /local/</h2>
+### 2.2. [Composer][composer-autoload]
 
-НЕОБХОДИМО, чтобы работа по новому функционалу производилась в папке <code>/local/</code>.
-Документация - <a href="http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php">/local/</a>
+РЕКОМЕНДУЕТСЯ располагать `composer.json` непосредственно в директории `/local/`.
 
-<h2>4. Организация автозагрузки классов ВНЕ МОДУЛЯ</h2>
+### 2.3. Организация автозагрузки классов ВНЕ МОДУЛЯ
 
-НЕОБХОДИМО, чтобы пространства имён и классы соответствовали стандарту "автозагрузки" <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/ru/PSR-4-autoloader-examples.md">PSR-4</a>.
+Согласно базовому стандарту кодирования([PSR-2][psr-2]), НЕОБХОДИМО чтобы пространства имён и классы
+соответствовали стандарту "автозагрузки" [PSR-4: Autoloader][psr-4].
 
-Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум первого уровня — соответствующем названию разработчика. Рекомендуемый вариант размещения классов: папка <code>/local/lib/[Vendor]</code>.
-Например, для <code>\\Epages</code> путь от корня сайта будет <code>/local/lib/Epages/</code>
+Это значит что каждый класс должен располагаться в отдельном файле и находиться в пространстве имён как минимум
+первого уровня — соответствующем названию разработчика. Рекомендуемый вариант размещения классов:
+папка `/local/lib/[Vendor]`.
+Например, для `\Epages` путь от корня сайта будет `/local/lib/Epages/`
 
 Пример организации автозагрузки классов ВНЕ МОДУЛЯ:
 
 Структура папок:
-<ul>
-    <li>/local/</li>
-    <ul>
-        <li>lib/</li>
-        <ul>
-            <li>Epages/</li>
-            <ul>
-                <li>SomeModule/</li>
-                <ul>
-                    <li>SomeClass1.php</li>
-                </ul>
-                <li>SomeClass2.php</li>
-            </ul>
-        </ul>
-    </ul>
-    <li>autoloader.php</li>
-</ul>
 
-Пример файла autoloader.php:
+- /local/
+    - lib/
+        - Epages/
+            - SomeModule/
+                - SomeClass1.php
+            - SomeClass2.php
+- autoloader.php
 
-```php
-<?php
+РЕКОМЕНДУЕТСЯ использовать [Composer][composer-autoload] для автозагрузки.
 
-/**
- * An example of a general-purpose implementation that includes the optional
- * functionality of allowing multiple base directories for a single namespace
- * prefix.
- */
-class Psr4Autoloader
+Для сторонних библиотек не совместимых с [PSR-4][psr-4]
+РЕКОМЕНДУЕТСЯ использовать автозагрузку на основе карты классов (`classmap`).
+
+Пример `composer.json`:
+
+```json
 {
-    /**
-     * An associative array where the key is a namespace prefix and the value
-     * is an array of base directories for classes in that namespace.
-     *
-     * @var array
-     */
-    protected $prefixes = array();
-
-    /**
-     * Register loader with SPL autoloader stack.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        spl_autoload_register(array($this, 'loadClass'));
-    }
-
-    /**
-     * Adds a base directory for a namespace prefix.
-     *
-     * @param string $prefix The namespace prefix.
-     * @param string $base_dir A base directory for class files in the
-     * namespace.
-     * @param bool $prepend If true, prepend the base directory to the stack
-     * instead of appending it; this causes it to be searched first rather
-     * than last.
-     * @return void
-     */
-    public function addNamespace($prefix, $base_dir, $prepend = false)
-    {
-        // normalize namespace prefix
-        $prefix = trim($prefix, '\\');
-
-        // normalize the base directory with a trailing separator
-        $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
-
-        // initialize the namespace prefix array
-        if (isset($this->prefixes[$prefix]) === false) {
-            $this->prefixes[$prefix] = array();
-        }
-
-        // retain the base directory for the namespace prefix
-        if ($prepend) {
-            array_unshift($this->prefixes[$prefix], $base_dir);
-        } else {
-            array_push($this->prefixes[$prefix], $base_dir);
-        }
-    }
-
-    /**
-     * Loads the class file for a given class name.
-     *
-     * @param string $class The fully-qualified class name.
-     * @return mixed The mapped file name on success, or boolean false on
-     * failure.
-     */
-    public function loadClass($class)
-    {
-        // the current namespace prefix
-        $prefix = $class;
-
-        // work backwards through the namespace names of the fully-qualified
-        // class name to find a mapped file name
-        while (false !== $pos = strrpos($prefix, '\\')) {
-
-
-            $prefix = substr($class, 0, $pos);
-
-            // the rest is the relative class name
-            $relative_class = substr($class, $pos + 1);
-
-            // try to load a mapped file for the prefix and relative class
-            $mapped_file = $this->loadMappedFile($prefix, $relative_class);
-            if ($mapped_file) {
-                return $mapped_file;
-            }
-
-        }
-
-        // never found a mapped file
-        return false;
-    }
-
-    /**
-     * Load the mapped file for a namespace prefix and relative class.
-     *
-     * @param string $prefix The namespace prefix.
-     * @param string $relative_class The relative class name.
-     * @return mixed Boolean false if no mapped file can be loaded, or the
-     * name of the mapped file that was loaded.
-     */
-    protected function loadMappedFile($prefix, $relative_class)
-    {
-        // are there any base directories for this namespace prefix?
-        if (isset($this->prefixes[$prefix]) === false) {
-            return false;
-        }
-
-        // look through base directories for this namespace prefix
-        foreach ($this->prefixes[$prefix] as $base_dir) {
-
-            // replace the namespace prefix with the base directory,
-            // replace namespace separators with directory separators
-            // in the relative class name, append with .php
-            $file = $base_dir
-                . str_replace('\\', '/', $relative_class)
-                . '.php';
-
-            // if the mapped file exists, require it
-            if ($this->requireFile($file)) {
-                // yes, we're done
-                return $file;
-            }
-        }
-
-        // never found it
-        return false;
-    }
-
-    /**
-     * If a file exists, require it from the file system.
-     *
-     * @param string $file The file to require.
-     * @return bool True if the file exists, false if not.
-     */
-    protected function requireFile($file)
-    {
-        if (file_exists($file)) {
-            require $file;
-            return true;
-        }
-        return false;
+    "autoload": {
+        "psr-4": {"Epages\\": "lib/Epages"},
+        "classmap": ["lib/no-psr/"]
     }
 }
-?>
 ```
 
 Подключение класса автозагрузки в Битрикс:
 ```php
 <?php
 //init.php
-// ...
 
-include_once $_SERVER["DOCUMENT_ROOT"] . '/local/autoloader.php';
-$loader = new Psr4Autoloader;
-$loader->register();
-$loader->addNamespace('Epages', $_SERVER["DOCUMENT_ROOT"] . '/local/lib/Epages');
-
-// ...
-?>
+require_once $_SERVER['DOCUMENT_ROOT'].'/local/vendor/autoload.php';
 ```
 
-Пример вызова класса <code>SomeClass1</code>:
+Пример вызова класса `SomeClass1`:
 
 ```php
 <?php
-/* Будет автоматически подключен файл /local/lib/Epages/SomeModule/SomeClass1.php */
+
+//Будет автоматически подключен файл /local/lib/Epages/SomeModule/SomeClass1.php
 $ob = new \Epages\SomeModule\SomeClass1();
-?>
 ```
 
-Пример вызова класса <code>SomeClass2</code>:
+Пример вызова класса `SomeClass2`:
 
 ```php
 <?php
-/* Будет автоматически подключен файл /local/lib/Epages/SomeClass2.php */
+
+//Будет автоматически подключен файл /local/lib/Epages/SomeClass2.php
 $ob = new \Epages\SomeClass2();
-?>
 ```
-<h3>4.1. Обработчики событий</h3>
-РЕКОМЕНДУЕТСЯ обработчики событий размещать в классах, таким образом:
-<code>\\Epages\\[модуль]\\Event\\[событие]</code>
-Пример подключения:
+
+### 2.3. Миграции баз данных
+
+Для миграций РЕКОМЕНДУЕТСЯ использовать [Phinx][phinx].
+
+Файлы миграций РЕКОМЕНДУЕТСЯ хранить в директории `/local/migrations/`
+
+Пример файла конфигурации Phinx `/local/phinx.php`
+
 ```php
-AddEventHandler(
-'iblock',
-'OnBeforeIBlockElementUpdate',
-array('\Epages\IBlock\Event\OnBeforeIBlockElementUpdate', 'doSomethingCool')
+<?php
+
+define('NOT_CHECK_PERMISSIONS', true);
+define('NO_AGENT_CHECK', true);
+$GLOBALS['DBType'] = 'mysql';
+$_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
+include $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php';
+// manual saving of DB resource
+global $DB;
+$app = \Bitrix\Main\Application::getInstance();
+$con = $app->getConnection();
+$DB->db_Conn = $con->getResource();
+// "authorizing" as admin
+$_SESSION['SESS_AUTH']['USER_ID'] = 1;
+
+$config = include realpath(__DIR__.'/../bitrix/.settings.php');
+
+return array(
+    'paths' => array(
+        'migrations' => realpath(__DIR__.'/migrations/'),
+    ),
+    'environments' => array(
+        'default_migration_table' => 'phinxlog',
+        'default_database' => 'dev',
+        'dev' => array(
+            'adapter' => 'mysql',
+            'host' => $config['connections']['value']['default']['host'],
+            'name' => $config['connections']['value']['default']['database'],
+            'user' => $config['connections']['value']['default']['login'],
+            'pass' => $config['connections']['value']['default']['password'],
+        ),
+    ),
 );
 ```
 
-<h2>5. Базовые правила при разработке под Битрикс</h2>
-<ul>
-    <li>при добавлении кода в файл init.php РЕКОМЕНДУЕТСЯ выносить логически сгруппированный код в отдельные файлы и подключать их внутри init.php</li>
-    <li>НЕ РЕКОМЕНДУЕТСЯ использовать цифровые значения в GetList, GetByID и схожих методах, которые принимают различные ID. РЕКОМЕНДУЕТСЯ создать файл со всеми необходимыми константами и вызывать их имена. У каждой константы ДОЛЖНО быть «говорящее» именование и комментарий.</li>
-</ul>
+Для создании миграции нужно выполнить команду:
 
-<b>Не правильно:</b>
-```php
-<?php
-$comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => 12));
-?>
+```
+cd [корневая директория проекта]/local/
+vendor/bin/phing create [название класса миграции]
 ```
 
-<b>Правильно: Создаем файл constants.php и указываем в нем:</b>
+Далее в появившемся файле НУЖНО имплементировать методы `up()` и `down()`, которые будут выполняться при применении и откате миграции соответственно.
+
+Например:
+```php
+<?php
+
+use Phinx\Migration\AbstractMigration;
+use Bitrix\Main\Loader;
+
+/**
+ * Create 'new' order property.
+ */
+class CreateOrderPropertyNew extends AbstractMigration
+{
+    public function up()
+    {
+        Loader::includeModule('sale');
+        //create order property
+    }
+    public function down()
+    {
+        Loader::includeModule('sale');
+        //delete order property
+    }
+}
+```
+
+### 2.4. Обработчики событий
+РЕКОМЕНДУЕТСЯ обработчики событий размещать в классах, таким образом:
+`\Epages\[модуль]\Event\[событие]`
+
+Пример подключения:
+```php
+AddEventHandler(
+    'iblock',
+    'OnBeforeIBlockElementUpdate',
+    array('\Epages\IBlock\Event\OnBeforeIBlockElementUpdate', 'doSomethingCool')
+);
+```
+
+## 3. Базовые правила при разработке под Битрикс
+
+### 3.1. Избегать нагромождение кода в `init.php`
+
+- при добавлении кода в файл init.php РЕКОМЕНДУЕТСЯ выносить логически сгруппированный код в отдельные классы/файлы
+и подключать их внутри `init.php`.
+
+- обработчики событий РЕКОМЕНДУЕТСЯ располагать в `init.php` и группировать по модулю.
+
+
+### 3.2. Форматирование в шаблонах
+Управляющие структуры `if()`, `foreach()`, `while()` и т.д. в шаблоне компонента вместе с html-версткой
+НЕ ДОЛЖНЫ использовать фигурные скобки.
+СЛЕДУЕТ заменить фигурные скобки альтернативным синтаксисом управляющих структур
+
+Пример плохого кода, где из-за фигурных скобок пострадала читабельность:
+```php
+<?php if ($condition === true) {?>
+	<a href="/programm.php">Link text</a>
+<?php } elseif ($condition === true) {?>
+	<a href="/programm.php">Link text</a>
+<?php }else {?>
+	<a href="/programm.php">Link text</a>
+<?php }?>
+```
+
+Примеры правильного кода:
+```php
+<?php if ($condition === true):?>
+	<a href="<?=$link?>">Link text</a>
+<?php elseif ($condition === true):?>
+	<a href="/programm.php">Link text</a>
+<?php else:?>
+	<a href="/programm.php">Link text</a>
+<?php endif;?>
+```
+- НЕ РЕКОМЕНДУЕТСЯ выводить элементы верстки используя конструкцию языка `echo` или функцию `print`. СЛЕДУЕТ прервать PHP-код тэгом `?>` и разместить после него нужные html-элементы
+- НЕ РЕКОМЕНДУЕТСЯ выносить связные элементы верстки за шаблон компонента
+
+Пример плохого кода:
+```php
+<div class="navbar">
+	<ul class="top-menu">
+		<?php
+		$APPLICATION->IncludeComponent(
+			'bitrix:menu',
+			'top',
+			array(
+				'ROOT_MENU_TYPE' => 'top',
+				'MENU_CACHE_TYPE' => 'A',
+				'MENU_CACHE_TIME' => '36000000',
+				'MENU_CACHE_USE_GROUPS' => 'Y',
+				'MENU_CACHE_GET_VARS' => array(),
+				'MAX_LEVEL' => '1',
+				'USE_EXT' => 'N',
+				'ALLOW_MULTI_SELECT' => 'N',
+			)
+		);
+		?>
+	</ul>
+</div>
+```
+Правильно будет перенести `<ul class="top-menu">` в шаблон
+
+### 3.3. Константы
+
+- НЕ РЕКОМЕНДУЕТСЯ использовать цифровые значения в GetList, GetByID и схожих методах, которые принимают различные ID.
+- РЕКОМЕНДУЕТСЯ создать файл со всеми необходимыми константами и вызывать их имена.
+- У каждой константы ДОЛЖНО быть "говорящее" имя и комментарий.
+
+
+**Не правильно:**
+```php
+<?php
+$comments = CIBlockElement::GetList(array(), array('IBLOCK_ID' => 12));
+```
+
+**Правильно: Создаем файл constants.php и указываем в нем:**
 ```php
 <?php
 //ИБ с комментариями пользователей
 const COMMENTS_IBLOCK_ID = 12;
-?>
 ```
 
-<b>Подключаем этот файл в init.php</b>
+**Подключаем этот файл в init.php**
 ```php
 <?php
 //Константы проекта
-include_once($_SERVER["DOCUMENT_ROOT"] . '/local/constants.php');
-?>
+include_once($_SERVER['DOCUMENT_ROOT'].'/local/constants.php');
 ```
 
-<b>Используем константу</b>
+**Используем константу**
 ```php
 <?php
-$comments = CIBlockElement::GetList(Array(), Array("IBLOCK_ID" => COMMENTS_IBLOCK_ID));
-?>
+$comments = CIBlockElement::GetList(array(), array('IBLOCK_ID' => COMMENTS_IBLOCK_ID));
 ```
-<ul>
-    <li>при выборках данных (например, GetList) ОБЯЗАТЕЛЬНО указывать поля, которые нужны для дальнейших манипуляций, кроме случаев, когда нужны все поля</li>
-    <li>при необходмости выбрать несколько элементов по ID, ОБЯЗАТЕЛЬНО использовать GetList вместо GetByID
-</ul>
-<b>Не правильно:</b>
+- при выборках данных (например, GetList) ОБЯЗАТЕЛЬНО указывать поля, которые нужны для дальнейших манипуляций,
+ кроме случаев, когда нужны все поля
+- при необходмости выбрать несколько элементов по ID, ОБЯЗАТЕЛЬНО использовать GetList вместо GetByID
+
+**Не правильно:**
+
 ```php
 <?php
 $element1 = CIBlockElement::GetByID(1);
 $element2 = CIBlockElement::GetByID(2);
-?>
 ```
 
-<b>Правильно:</b>
+**Правильно:**
 ```php
 <?php
-$elements = CIBlockElement::GetList(Array(), Array("ID" => Array(1, 2)));
-?>
+$elements = CIBlockElement::GetList(array(), array('ID' => array(1, 2)));
 ```
 
-<ul>
-    <li>НЕ РЕКОМЕНДУЕТСЯ использовать прямые запросы к базе данных без крайней необходимости</li>
-    <li>если к файлу не предусмотрен прямой доступ ОБЯЗАТЕЛЬНО в первой строке файла добавить</li>
-</ul>
+- НЕ РЕКОМЕНДУЕТСЯ использовать прямые запросы к базе данных без крайней необходимости
+- если к файлу не предусмотрен прямой доступ ОБЯЗАТЕЛЬНО в первой строке файла добавить
+
 ```php
 <?php
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
-?>
+if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 ```
