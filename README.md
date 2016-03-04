@@ -13,10 +13,7 @@
 4. [EPAGES-CS-4 - Комментарии](PHP/EPAGES-CS-4.md)
 
 ### JavaScript
-  <ol>
-    <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/JS/EPAGES-CS-5.md">EPAGES-CS-5</a> - Основной стандарт кодирование на JavaScript</li>
-  </ol>
-<h3>VCS</h3>
-  <ol>
-    <li><a href="https://github.com/rodion-arr/EpagesCodingStandards/blob/master/VCS/EPAGES-CS-6.md">EPAGES-CS-6</a> - Стандарт написания сообщений к коммитам</li>
-  </ol>
+1. [EPAGES-CS-5 - Основной стандарт кодирование на JavaScript](JS/EPAGES-CS-5.md)
+
+### VCS
+1. [EPAGES-CS-6 - Стандарт написания сообщений к коммитам](VCS/EPAGES-CS-6.md)
