@@ -7,7 +7,7 @@
 [psr-4]: http://www.php-fig.org/psr/psr-4/
 [local-folder]: http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php
 [composer-autoload]: https://getcomposer.org/doc/01-basic-usage.md#autoloading
-[phinx]: https://phinx.org/
+[phinx]: https://github.com/robmorgan/phinx
 
 ## 1. Форматирование
 НЕОБХОДИМО придерживаться [PSR-1: Basic Coding Standard][psr-1] и [PSR-2: Coding Style Guide][psr-2].
@@ -135,8 +135,10 @@ return array(
 
 ```
 cd [корневая директория проекта]/local/
-vendor/bin/phing create [название класса миграции]
+vendor/bin/phinx create [название класса миграции]
 ```
+
+Примечание: в Windows надо вместо `vendor/bin/phinx` использовать `vendor\bin\phinx`
 
 Далее в появившемся файле НУЖНО имплементировать методы `up()` и `down()`, которые будут выполняться при применении и откате миграции соответственно.
 
@@ -164,6 +166,9 @@ class CreateOrderPropertyNew extends AbstractMigration
     }
 }
 ```
+
+Для запуска миграции: `vendor/bin/phinx migrate`
+Для отката миграции: `vendor/bin/phinx rollback`
 
 ### 2.4. Обработчики событий
 РЕКОМЕНДУЕТСЯ обработчики событий размещать в классах, таким образом:
