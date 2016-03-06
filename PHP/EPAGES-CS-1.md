@@ -168,6 +168,7 @@ class CreateOrderPropertyNew extends AbstractMigration
 ```
 
 Для запуска миграции: `vendor/bin/phinx migrate`
+
 Для отката миграции: `vendor/bin/phinx rollback`
 
 ### 2.4. Обработчики событий
