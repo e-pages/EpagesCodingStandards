@@ -159,6 +159,7 @@ class CreateOrderPropertyNew extends AbstractMigration
         Loader::includeModule('sale');
         //create order property
     }
+
     public function down()
     {
         Loader::includeModule('sale');
