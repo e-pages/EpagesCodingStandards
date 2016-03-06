@@ -89,6 +89,8 @@ $ob = new \Epages\SomeClass2();
 
 Для миграций РЕКОМЕНДУЕТСЯ использовать [Phinx][phinx].
 
+`composer require robmorgan/phinx`
+
 Файлы миграций РЕКОМЕНДУЕТСЯ хранить в директории `/local/migrations/`
 
 Пример файла конфигурации Phinx `/local/phinx.php`
