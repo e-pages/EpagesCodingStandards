@@ -49,7 +49,6 @@
             - SomeModule/
                 - SomeClass1.php
             - SomeClass2.php
-- autoloader.php
 
 РЕКОМЕНДУЕТСЯ использовать [Composer][composer-autoload] для автозагрузки.
 
@@ -175,9 +174,9 @@ class CreateOrderPropertyNew extends AbstractMigration
 }
 ```
 
-Для запуска миграции: `vendor/bin/phinx migrate`
+Для запуска миграции: `vendor/bin/phinx migrate` [Подробнее...](http://docs.phinx.org/en/latest/commands.html#the-migrate-command)
 
-Для отката миграции: `vendor/bin/phinx rollback`
+Для отката миграции: `vendor/bin/phinx rollback` [Подробнее...](http://docs.phinx.org/en/latest/commands.html#the-rollback-command)
 
 ### 2.4. Обработчики событий
 РЕКОМЕНДУЕТСЯ обработчики событий размещать в классах, таким образом:
