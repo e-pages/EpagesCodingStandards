@@ -12,6 +12,8 @@
 ## 1. Форматирование
 НЕОБХОДИМО придерживаться [PSR-1: Basic Coding Standard][psr-1] и [PSR-2: Coding Style Guide][psr-2].
 
+[Дополнительно.](EPAGES-CS-2.md)
+
 ## 2. Расположение кода
 
 ### 2.1. Директория local
@@ -194,63 +196,7 @@ AddEventHandler(
 
 - обработчики событий РЕКОМЕНДУЕТСЯ располагать в `init.php` и группировать по модулю.
 
-
-### 3.2. Форматирование в шаблонах
-Управляющие структуры `if()`, `foreach()`, `while()` и т.д. в шаблоне компонента вместе с html-версткой
-НЕ ДОЛЖНЫ использовать фигурные скобки.
-СЛЕДУЕТ заменить фигурные скобки
-[альтернативным синтаксисом управляющих структур](http://php.net/manual/ru/control-structures.alternative-syntax.php)
-
-Пример плохого кода, где из-за фигурных скобок пострадала читабельность:
-```php
-<?php if ($condition === true) {?>
-	<a href="/programm.php">Link text</a>
-<?php } elseif ($condition === true) {?>
-	<a href="/programm.php">Link text</a>
-<?php } else {?>
-	<a href="/programm.php">Link text</a>
-<?php }?>
-```
-
-Примеры правильного кода:
-```php
-<?php if ($condition === true):?>
-	<a href="<?=$link?>">Link text</a>
-<?php elseif ($condition === true):?>
-	<a href="/programm.php">Link text</a>
-<?php else:?>
-	<a href="/programm.php">Link text</a>
-<?php endif;?>
-```
-- НЕ РЕКОМЕНДУЕТСЯ выводить элементы верстки используя конструкцию языка `echo` или функцию `print`. СЛЕДУЕТ прервать PHP-код тэгом `?>` и разместить после него нужные html-элементы
-- НЕ РЕКОМЕНДУЕТСЯ выносить связные элементы верстки за шаблон компонента
-
-Пример плохого кода:
-```php
-<div class="navbar">
-	<ul class="top-menu">
-		<?php
-		$APPLICATION->IncludeComponent(
-			'bitrix:menu',
-			'top',
-			array(
-				'ROOT_MENU_TYPE' => 'top',
-				'MENU_CACHE_TYPE' => 'A',
-				'MENU_CACHE_TIME' => '36000000',
-				'MENU_CACHE_USE_GROUPS' => 'Y',
-				'MENU_CACHE_GET_VARS' => array(),
-				'MAX_LEVEL' => '1',
-				'USE_EXT' => 'N',
-				'ALLOW_MULTI_SELECT' => 'N',
-			)
-		);
-		?>
-	</ul>
-</div>
-```
-Правильно будет перенести `<ul class="top-menu">` в шаблон
-
-### 3.3. Константы
+### 3.2. Константы
 
 - НЕ РЕКОМЕНДУЕТСЯ использовать цифровые значения в GetList, GetByID и схожих методах, которые принимают различные ID.
 - РЕКОМЕНДУЕТСЯ создать файл со всеми необходимыми константами и вызывать их имена.
