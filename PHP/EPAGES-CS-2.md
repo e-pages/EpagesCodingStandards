@@ -39,7 +39,7 @@
 ```php
 <?php
 if ('cli' === $mode
-    && !$forceHtml) {
+        && !$forceHtml) {
     $lineEnding = "\n";
 } else {
     $lineEnding = '<br>';
@@ -104,7 +104,7 @@ if (
 ```php
 <?php
 $someString = 'some string';
-$anotherString = "another string\n"
+$anotherString = "another string\n";
 $yetAnotherString = "some variable: $someVariable";
 ```
 
@@ -112,9 +112,9 @@ $yetAnotherString = "some variable: $someVariable";
 
 ## 6. Массивы
 
-Запятую после последнего элемента РЕКОМЕНДУЕТСЯ при:
-- однострочной записи - ставить
-- многострочной записи - не ставить
+РЕКОМЕНДУЕТСЯ запятую после последнего элемента при:
+- однострочной записи - не ставить
+- многострочной записи - ставить
 
 ```php
 <?php
@@ -135,8 +135,8 @@ $filter = array(
 ```php
 <?php
 $array = array(
-	'key1RealyLong' => 'value1',
-	'key2'			=> 'value2',
+	'key1-really-long' => 'value1',
+	'key2'			   => 'value2',
 );
 ?>
 ```
