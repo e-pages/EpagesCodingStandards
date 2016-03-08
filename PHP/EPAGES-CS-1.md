@@ -1,16 +1,14 @@
 # EPAGES-CS-1 - E-PAGES Coding Standart 1
 
-# Основной стандарт кодирования
-
-[psr-1]: http://www.php-fig.org/psr/psr-1/
-[psr-2]: http://www.php-fig.org/psr/psr-2/
 [psr-4]: http://www.php-fig.org/psr/psr-4/
 [local-folder]: http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php
 [composer-autoload]: https://getcomposer.org/doc/01-basic-usage.md#autoloading
 [phinx]: https://github.com/robmorgan/phinx
 
+# Основной стандарт кодирования
+
 ## Содержимое
-- [1.Форматирование](#1-Форматирование)
+- [1. Форматирование](#1-Форматирование)
 - [2. Расположение кода](#2-Расположение-кода)
     - [2.1. Директория local](#21-Директория-local)
     - [2.2. Composer](#22-composer)
@@ -22,9 +20,7 @@
     - [3.2. Константы](#32-Константы)
 
 ## 1. Форматирование
-НЕОБХОДИМО придерживаться [PSR-1: Basic Coding Standard][psr-1] и [PSR-2: Coding Style Guide][psr-2].
-
-[Дополнительно.](EPAGES-CS-2.md)
+НЕОБХОДИМО придерживаться [EPAGES-CS-2](EPAGES-CS-2.md).
 
 ## 2. Расположение кода
 
@@ -38,9 +34,6 @@
 РЕКОМЕНДУЕТСЯ располагать `composer.json` непосредственно в директории `local`.
 
 ### 2.3. Организация автозагрузки классов ВНЕ МОДУЛЯ
-
-Согласно базовому стандарту кодирования([PSR-2][psr-2]), НЕОБХОДИМО чтобы пространства имён и классы
-соответствовали стандарту "автозагрузки" [PSR-4: Autoloader][psr-4].
 
 Рекомендуемый вариант размещения классов:
 директория `/local/lib/[Vendor]`.

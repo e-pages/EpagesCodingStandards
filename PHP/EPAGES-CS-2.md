@@ -1,5 +1,8 @@
 # EPAGES-CS-2 - E-PAGES Coding Standart 2
 
+[psr-1]: http://www.php-fig.org/psr/psr-1/
+[psr-2]: http://www.php-fig.org/psr/psr-2/
+
 # Форматирование кода
 
 Этот раздел стандарта описывает правила форматирования кода на PHP.
