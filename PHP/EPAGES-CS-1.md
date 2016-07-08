@@ -182,6 +182,18 @@ class CreateOrderPropertyNew extends AbstractMigration
 
 Для отката миграции: `vendor/bin/phinx rollback` [Подробнее...](http://docs.phinx.org/en/latest/commands.html#the-rollback-command)
 
+Если добавить в раздел `scripts` файла `composer.json`
+```json
+{
+    "scripts": {
+        "migrate": "phinx migrate",
+        "rollback": "phinx rollback"
+    }
+}
+```
+Для запуска и отката миграций можно будет исльпользовать
+`composer migrate` и `composer rollback` соответственно.
+
 ### 2.4. Обработчики событий
 РЕКОМЕНДУЕТСЯ обработчики событий размещать в классах, таким образом:
 `\Epages\[модуль]\Event\[событие]`
