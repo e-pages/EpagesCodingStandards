@@ -38,8 +38,9 @@
 **Пример**
 ```php
 <?php
-if ('cli' === $mode
-        && !$forceHtml) {
+if ('cli' === $mode 
+    && !$forceHtml
+) {
     $lineEnding = "\n";
 } else {
     $lineEnding = '<br>';
@@ -52,24 +53,22 @@ $text .= $line.$lineEnding;
 - переносить можно после запятой или перед оператором;
 - первый перенос ДОЛЖЕН быть сдвинут относительно верхней строки на 1 отступ;
 - если в выражении несколько переносов, то следующие переносы выравниваются на уровне первого;
+- если выражение условия в условном операторе располагается на нескольких строках закрывающая круглая скобка должна располагаться с новой строки;
 
 
 **Пример**
 
 ```php
 <?php
-if (COption::GetOptionString('main', 'new_user_registration', 'N') == 'Y'
-        && $_SERVER['REQUEST_METHOD'] == 'POST' && $TYPE == 'REGISTRATION'
-        && (!defined('ADMIN_SECTION') || ADMIN_SECTION !== true)) {
-    //body
-}
-
-if (
-    COption::GetOptionString('main', 'new_user_registration', 'N') == 'Y'
-    && $_SERVER['REQUEST_METHOD'] == 'POST' && $TYPE == 'REGISTRATION'
+if ('Y' === COption::GetOptionString('main', 'new_user_registration', 'N')
+    && 'POST' === $_SERVER['REQUEST_METHOD'] && 'REGISTRATION' === $type
     && (!defined('ADMIN_SECTION') || ADMIN_SECTION !== true)
 ) {
     //body
+} elseif ('Y' === COption::GetOptionString('main', 'new_user_registration', 'N')
+    && 'LOGIN' === $type
+) {
+    //elseif body
 }
 ```
 
@@ -79,16 +78,14 @@ if (
 ```php
 <?php
 $publicStatisticOnly = false;
-if (
-	defined('STATISTIC_ONLY')
+if (defined('STATISTIC_ONLY')
 	&& STATISTIC_ONLY
 	&& substr($APPLICATION->GetCurPage(), 0, strlen(BX_ROOT.'/admin/')) !== BX_ROOT.'/admin/'
 ) {
 	$publicStatisticOnly = true;
 }
 
-if (
-	!$publicStatisticOnly
+if (!$publicStatisticOnly
 	&& strlen(LANG_CHARSET) > 0
 	&& COption::GetOptionString('main', 'include_charset', 'Y') == 'Y'
 ) {
@@ -105,7 +102,7 @@ if (
 <?php
 $someString = 'some string';
 $anotherString = "another string\n";
-$yetAnotherString = "some variable: $someVariable";
+$yetAnotherString = "some variable: {$someVariable}";
 ```
 
 
@@ -129,16 +126,24 @@ $filter = array(
 );
 ```
 
-Табличное форматирование с помощью символов табуляции НЕ ДОЛЖНО использоваться.
+Выравнивание значений в массивах отступами НЕ ДОЛЖНО использоваться.
 
-Пример неправильного форматирования:
+Не правильно:
 ```php
 <?php
 $array = array(
 	'key1-really-long' => 'value1',
 	'key2'			   => 'value2',
 );
-?>
+```
+
+Правильно:
+```php
+<?php
+$array = array(
+	'key1-really-long' => 'value1',
+	'key2' => 'value2',
+);
 ```
 
 ## 7. Прочее
@@ -151,56 +156,18 @@ $r = $a || ($b && $c);
 ```
 
 ## 8. Форматирование в шаблонах
-Управляющие структуры `if()`, `foreach()`, `while()` и т.д. в шаблоне компонента вместе с html-версткой
-НЕ ДОЛЖНЫ использовать фигурные скобки.
-СЛЕДУЕТ заменить фигурные скобки
-[альтернативным синтаксисом управляющих структур](http://php.net/manual/ru/control-structures.alternative-syntax.php)
 
-Пример плохого кода, где из-за фигурных скобок пострадала читабельность:
-```php
-<?php if ($condition === true) {?>
-	<a href="/programm.php">Link text</a>
-<?php } elseif ($condition === true) {?>
-	<a href="/programm.php">Link text</a>
-<?php } else {?>
-	<a href="/programm.php">Link text</a>
-<?php }?>
-```
+- НЕ РЕКОМЕНДУЕТСЯ выводить элементы верстки используя конструкцию языка `echo` или функцию `print`. СЛЕДУЕТ прервать PHP-код тэгом `?>` и разместить после него нужные html-элементы
+- Вместо `<?php echo $variable ?>` СЛЕДУЕТ использовать `<?= $variable ?>`
+- РЕКОМЕНДУЕТСЯ использовать [альтернативный синтаксис управляющих структур](http://php.net/manual/ru/control-structures.alternative-syntax.php)
 
-Примеры правильного кода:
+Пример:
 ```php
-<?php if ($condition === true):?>
-	<a href="<?=$link?>">Link text</a>
-<?php elseif ($condition === true):?>
+<?php if ( true === $condition) :?>
+	<a href="<?= $link ?>">Link text</a>
+<?php elseif (true === $condition) :?>
 	<a href="/programm.php">Link text</a>
-<?php else:?>
+<?php else :?>
 	<a href="/programm.php">Link text</a>
 <?php endif;?>
 ```
-- НЕ РЕКОМЕНДУЕТСЯ выводить элементы верстки используя конструкцию языка `echo` или функцию `print`. СЛЕДУЕТ прервать PHP-код тэгом `?>` и разместить после него нужные html-элементы
-- НЕ РЕКОМЕНДУЕТСЯ выносить связные элементы верстки за шаблон компонента
-
-Пример плохого кода:
-```php
-<div class="navbar">
-	<ul class="top-menu">
-		<?php
-		$APPLICATION->IncludeComponent(
-			'bitrix:menu',
-			'top',
-			array(
-				'ROOT_MENU_TYPE' => 'top',
-				'MENU_CACHE_TYPE' => 'A',
-				'MENU_CACHE_TIME' => '36000000',
-				'MENU_CACHE_USE_GROUPS' => 'Y',
-				'MENU_CACHE_GET_VARS' => array(),
-				'MAX_LEVEL' => '1',
-				'USE_EXT' => 'N',
-				'ALLOW_MULTI_SELECT' => 'N',
-			)
-		);
-		?>
-	</ul>
-</div>
-```
-Правильно будет перенести `<ul class="top-menu">` в шаблон
