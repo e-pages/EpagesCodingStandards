@@ -3,7 +3,7 @@
 [psr-4]: http://www.php-fig.org/psr/psr-4/
 [local-folder]: http://dev.1c-bitrix.ru/community/blogs/vad/local-folder.php
 [composer-autoload]: https://getcomposer.org/doc/01-basic-usage.md#autoloading
-[phinx]: https://github.com/robmorgan/phinx
+[phpmig]: https://packagist.org/packages/antonlee/phpmig-bitrix
 
 # Основной стандарт кодирования
 
@@ -97,58 +97,23 @@ $ob = new \Epages\SomeClass2();
 
 ### 2.3. Миграции баз данных
 
-Для миграций РЕКОМЕНДУЕТСЯ использовать [Phinx][phinx].
+Для миграций РЕКОМЕНДУЕТСЯ использовать [Phpmig][phpmig].
 
-`composer require robmorgan/phinx`
+```bash
+$ composer require antonlee/phpmig-bitrix
+$ vendor/bin/phpmig-bitrix
+```
 
 Файлы миграций РЕКОМЕНДУЕТСЯ хранить в директории `/local/migrations/`
-
-Пример файла конфигурации Phinx `/local/phinx.php`
-
-```php
-<?php
-
-define('NOT_CHECK_PERMISSIONS', true);
-define('NO_AGENT_CHECK', true);
-$GLOBALS['DBType'] = 'mysql';
-$_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
-include $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php';
-// manual saving of DB resource
-global $DB;
-$app = \Bitrix\Main\Application::getInstance();
-$con = $app->getConnection();
-$DB->db_Conn = $con->getResource();
-// "authorizing" as admin
-$_SESSION['SESS_AUTH']['USER_ID'] = 1;
-
-$config = include realpath(__DIR__.'/../bitrix/.settings.php');
-
-return array(
-    'paths' => array(
-        'migrations' => realpath(__DIR__.'/migrations/'),
-    ),
-    'environments' => array(
-        'default_migration_table' => 'phinxlog',
-        'default_database' => 'dev',
-        'dev' => array(
-            'adapter' => 'mysql',
-            'host' => $config['connections']['value']['default']['host'],
-            'name' => $config['connections']['value']['default']['database'],
-            'user' => $config['connections']['value']['default']['login'],
-            'pass' => $config['connections']['value']['default']['password'],
-        ),
-    ),
-);
-```
 
 Для создании миграции нужно выполнить команду:
 
 ```
 cd [корневая директория проекта]/local/
-vendor/bin/phinx create [название класса миграции]
+vendor/bin/phpmig generate [название класса миграции]
 ```
 
-Примечание: в Windows надо вместо `vendor/bin/phinx` использовать `vendor\bin\phinx`
+Примечание: в Windows надо вместо `vendor/bin/phpmig` использовать `vendor\bin\phpmig`
 
 Далее в появившемся файле НУЖНО имплементировать методы `up()` и `down()`, которые будут выполняться при применении и откате миграции соответственно.
 
@@ -156,13 +121,13 @@ vendor/bin/phinx create [название класса миграции]
 ```php
 <?php
 
-use Phinx\Migration\AbstractMigration;
+use Phpmig\Migration\Migration;
 use Bitrix\Main\Loader;
 
 /**
  * Create 'new' order property.
  */
-class CreateOrderPropertyNew extends AbstractMigration
+class CreateOrderPropertyNew extends Migration
 {
     public function up()
     {
@@ -178,16 +143,18 @@ class CreateOrderPropertyNew extends AbstractMigration
 }
 ```
 
-Для запуска миграции: `vendor/bin/phinx migrate` [Подробнее...](http://docs.phinx.org/en/latest/commands.html#the-migrate-command)
+[Больше примеров миграций](https://github.com/e-pages/bitrix-db-migrations)
 
-Для отката миграции: `vendor/bin/phinx rollback` [Подробнее...](http://docs.phinx.org/en/latest/commands.html#the-rollback-command)
+Для запуска миграции: `vendor/bin/phpmig migrate`
+
+Для отката миграции: `vendor/bin/phpmig rollback` [Подробнее...](https://github.com/davedevelopment/phpmig#rolling-back)
 
 Если добавить в раздел `scripts` файла `composer.json`
 ```json
 {
     "scripts": {
-        "migrate": "phinx migrate",
-        "rollback": "phinx rollback"
+        "migrate": "phpmig migrate",
+        "rollback": "phpmig rollback"
     }
 }
 ```
@@ -196,14 +163,17 @@ class CreateOrderPropertyNew extends AbstractMigration
 
 ### 2.4. Обработчики событий
 РЕКОМЕНДУЕТСЯ обработчики событий размещать в классах, таким образом:
-`\Epages\[модуль]\Event\[событие]`
+`\Epages\Event\[модуль]\[событие]`
 
-Пример подключения:
+Пример подписки обработчика на событие:
 ```php
-AddEventHandler(
+<?php
+
+$eventManager = \Bitrix\Main\EventManager::getInstance();
+$eventManager->addEventHandler(
     'iblock',
     'OnBeforeIBlockElementUpdate',
-    array('\Epages\IBlock\Event\OnBeforeIBlockElementUpdate', 'doSomethingCool')
+    array('\Epages\Event\IBlock\OnBeforeIBlockElementUpdate', 'doSomethingCool')
 );
 ```
 
@@ -214,7 +184,7 @@ AddEventHandler(
 - при добавлении кода в файл init.php РЕКОМЕНДУЕТСЯ выносить логически сгруппированный код в отдельные классы/файлы
 и подключать их внутри `init.php`.
 
-- обработчики событий РЕКОМЕНДУЕТСЯ располагать в `init.php` и группировать по модулю.
+- код подписки обработчиков на события РЕКОМЕНДУЕТСЯ располагать в `init.php` и группировать по модулю.
 
 ### 3.2. Константы
 
