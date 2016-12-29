@@ -210,7 +210,7 @@ const COMMENTS_IBLOCK_ID = 12;
 ```php
 <?php
 //Константы проекта
-include_once($_SERVER['DOCUMENT_ROOT'].'/local/constants.php');
+require_once $_SERVER['DOCUMENT_ROOT'].'/local/constants.php';
 ```
 
 **Используем константу**

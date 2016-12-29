@@ -79,15 +79,15 @@ if ('Y' === COption::GetOptionString('main', 'new_user_registration', 'N')
 <?php
 $publicStatisticOnly = false;
 if (defined('STATISTIC_ONLY')
-	&& STATISTIC_ONLY
-	&& substr($APPLICATION->GetCurPage(), 0, strlen(BX_ROOT.'/admin/')) !== BX_ROOT.'/admin/'
+    && STATISTIC_ONLY
+    && substr($APPLICATION->GetCurPage(), 0, strlen(BX_ROOT.'/admin/')) !== BX_ROOT.'/admin/'
 ) {
-	$publicStatisticOnly = true;
+    $publicStatisticOnly = true;
 }
 
 if (!$publicStatisticOnly
-	&& strlen(LANG_CHARSET) > 0
-	&& COption::GetOptionString('main', 'include_charset', 'Y') == 'Y'
+    && strlen(LANG_CHARSET) > 0
+    && COption::GetOptionString('main', 'include_charset', 'Y') == 'Y'
 ) {
     //body
 }
@@ -118,11 +118,11 @@ $yetAnotherString = "some variable: {$someVariable}";
 $select = array('ID', 'NAME', 'SECTION_ID');
 
 $filter = array(
-	'key1' => 'value1',
-	'key2' => array(
-		'key21' => 'value21',
-		'key22' => 'value22',
-	),
+    'key1' => 'value1',
+    'key2' => array(
+        'key21' => 'value21',
+        'key22' => 'value22',
+    ),
 );
 ```
 
@@ -132,8 +132,8 @@ $filter = array(
 ```php
 <?php
 $array = array(
-	'key1-really-long' => 'value1',
-	'key2'			   => 'value2',
+    'key1-really-long' => 'value1',
+    'key2'			   => 'value2',
 );
 ```
 
@@ -141,8 +141,8 @@ $array = array(
 ```php
 <?php
 $array = array(
-	'key1-really-long' => 'value1',
-	'key2' => 'value2',
+    'key1-really-long' => 'value1',
+    'key2' => 'value2',
 );
 ```
 
@@ -163,11 +163,11 @@ $r = $a || ($b && $c);
 
 Пример:
 ```php
-<?php if ( true === $condition) :?>
-	<a href="<?= $link ?>">Link text</a>
+<?php if (true === $condition) :?>
+    <a href="<?= $link ?>">Link text</a>
 <?php elseif (true === $condition) :?>
-	<a href="/programm.php">Link text</a>
+    <a href="/programm.php">Link text</a>
 <?php else :?>
-	<a href="/programm.php">Link text</a>
+    <a href="/programm.php">Link text</a>
 <?php endif;?>
 ```
