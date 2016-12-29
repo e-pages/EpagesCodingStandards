@@ -4,10 +4,10 @@
 //init.php
 // ...
 
-include_once $_SERVER["DOCUMENT_ROOT"] . '/local/autoloader.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/local/autoloader.php';
 $loader = new Psr4Autoloader;
 $loader->register();
-$loader->addNamespace('Epages', $_SERVER["DOCUMENT_ROOT"] . '/local/lib/Epages');
+$loader->addNamespace('Epages', $_SERVER['DOCUMENT_ROOT'].'/local/lib/Epages');
 
 // ...
 ```
